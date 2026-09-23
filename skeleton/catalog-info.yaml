@@ -1,0 +1,63 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ${{ values.identifier }}
+  description: ${{ values.description | dump }}
+  annotations:
+    gitlab.com/project-slug: ${{ values.destination.owner + "/" + values.destination.repo }}
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - outputport
+    - vast
+    - s3
+spec:
+  type: outputport
+  lifecycle: experimental
+  owner: ${{ values.developmentGroup | dump }}
+  system: ${{ values.dataproduct | dump }}
+  domain: ${{ values.domain | dump }}
+  mesh:
+    name: ${{ values.name | dump }}
+    fullyQualifiedName: ${{ values.fullyQualifiedName | dump}}
+    description: ${{ values.description | dump}}
+    kind: outputport
+    version: ${{ values.identifier.split(".")[2] + ".0.0" }}
+    infrastructureTemplateId: ${{ values.infrastructureTemplateId }}
+    useCaseTemplateId: ${{ values.useCaseTemplateId }}
+    dependsOn:
+    {%- if values.dependsOn and values.dependsOn | length > 0 -%}
+      {%- for i in values.dependsOn %}
+      - {{ i }}
+      {%- endfor -%}
+    {%- else %} []
+    {%- endif %}
+    platform: Vast Data
+    technology: s3
+    outputPortType: Files
+    creationDate: ${{ values.creationDate }}
+    startDate: ${{ values.creationDate }}
+    processDescription: ${{ values.processDescription | dump }}
+    dataContract:
+      schema: []
+      termsAndConditions: ${{ values.termsAndConditions | dump }}
+      endpoint: ${{ values.endpoint | dump }}
+      SLA:
+        intervalOfChange: ${{ values.intervalOfChange }}
+        timeliness: ${{ values.timeliness }}
+        upTime: ${{ values.upTime }}
+    dataSharingAgreements:
+      purpose: ${{ values.purpose | dump }}
+      billing: ${{ values.billing | dump }}
+      security: ${{ values.security | dump }}
+      intendedUsage: ${{ values.intendedUsage | dump }}
+      limitations: ${{ values.limitations | dump }}
+      lifeCycle: ${{ values.lifeCycle | dump }}
+      confidentiality: ${{ values.confidentiality | dump }}
+    tags: []
+    sampleData: {}
+    semanticLinking: []
+    specific:
+      path: ${{ values.path }}
+      policy_name: ${{ values.policy_name }}
+      bucket_name: ${{ values.bucket_name }}
+      vip_pool: ${{ values.vip_pool }}

@@ -1,0 +1,246 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: vast-s3-outputport-template-1
+  title: Output Port Vast S3 Template
+  description: Repository containing the definition of a Vast S3 Output Port
+  mesh:
+    icon: https://cdn.dribbble.com/userupload/42159523/file/original-494d5b87b45485a2a7c05d0bd12c080f.gif
+  tags:
+    - vast
+    - s3
+    - output-port
+spec:
+  generates: componenttype:default/outputport
+  owner: agilelab
+  type: outputport
+  parameters:
+    - title: Basic component information
+      required:
+        - name
+        - domain
+        - dataproduct
+        - description
+      properties:
+        name:
+          title: Name
+          type: string
+          description: Required name used for display purposes
+          ui:field: EntityNamePicker
+          default: S3 Vast Output Port
+          ui:options:
+            allowArbitraryValues: true
+        fullyQualifiedName:
+          title: Fully Qualified Name
+          type: string
+          description: Output port fully qualified name
+        description:
+          title: Description
+          type: string
+          description: Help others understand what this output port is for
+        domain:
+          title: Domain
+          type: string
+          description: Domain of the Data Product this output port belongs to
+          ui:field: EntityPicker
+          ui:options:
+            allowArbitraryValues: false
+            allowedKinds:
+              - Domain
+        dataproduct:
+          title: Data Product
+          type: string
+          description: Data Product this output port belongs to
+          ui:field: EntityPicker
+          ui:filter:
+            - fieldName: domain
+              entityPath: spec.domain
+          ui:options:
+            allowArbitraryValues: false
+            allowedKinds:
+              - System
+        identifier:
+          title: Identifier
+          type: string
+          description: A unique identifier for the entity inside the domain. It will not
+            be editable aftrer creation and is expected to be a string that is
+            sequences of [a-zA-Z] separated by any of [-_]. An example could be
+            'finance-customer'.
+          ui:field: ComponentIdentifierPicker
+          ui:options:
+            allowArbitraryValues: false
+        developmentGroup:
+          title: DevelopmentGroup
+          type: string
+          description: Data Product development group
+          ui:field: EntitySelectionPicker
+          ui:fieldName: dataproduct
+          ui:property: spec.owner
+          ui:options:
+            allowArbitraryValues: false
+        dependsOn:
+          title: Depends on
+          type: array
+          default: []
+          items:
+            type: string
+            ui:field: EntityComponentsPicker
+            ui:fieldName: dataproduct
+            ui:options:
+              allowArbitraryValues: false
+          description: An Output Port could depend on other output ports or storage areas
+    - title: Provide some additional information
+      properties:
+        processDescription:
+          title: Process Description
+          type: string
+          description: what is the underlying process that contributes to generate the
+            data exposed by this output port
+        intervalOfChange:
+          title: Interval of change
+          type: string
+          description: how often changes in the data are reflected
+        timeliness:
+          title: Timeliness
+          type: string
+          description: the skew between the time that a business fact occuts and when it
+            becomes visibile in the data
+        upTime:
+          title: Up time
+          type: string
+          description: the percentage of port availability
+        termsAndConditions:
+          title: Terms and conditions
+          type: string
+          description: If the data is usable only in specific environments
+        endpoint:
+          title: Endpoint
+          type: string
+          description: this is the API endpoint that self-describe the output port and
+            provide insightful information at runtime about the physical
+            location of the data, the protocol must be used, etc.
+    - title: Data sharing agreements information
+      properties:
+        purpose:
+          title: Purpose
+          type: string
+          description: what is the goal of this data set
+        billing:
+          title: Billing
+          type: string
+          description: how a consumer will be charged back when it consumes this output port
+        security:
+          title: Security
+          type: string
+          description: additional information related to security aspects, like
+            restrictions, maskings, sensibile information and privacy
+        intendedUsage:
+          title: IntendedUsage
+          type: string
+          description: any other information needed by the consumer in order to
+            effectively consume the data, it could be related to technical stuff
+            (e.g. extract no more than one year of data for good performances )
+            or to business domains (e.g. this data is only useful in the
+            marketing domains)
+        limitations:
+          title: Limitations
+          type: string
+          description: If any limitation is present it must be made super clear to the
+            consumers
+        lifeCycle:
+          title: LifeCycle
+          type: string
+          description: Describe how the data will be historicized and how and when it will
+            be deleted
+        confidentiality:
+          title: Confidentiality
+          type: string
+          description: Describe what a consumer should do to keep the information
+            confidential, how to process and store it. Permission to share or
+            report it
+    - title: Provide Output port deployment information
+      required:
+        - path
+        - policy_name
+        - bucket_name
+        - vip_pool
+      properties:
+        path:
+          title: S3 Path
+          type: string
+          description: Name of the S3 Path.
+        policy_name:
+          title: Policy Name
+          type: string
+          description: Name of the view policy to be used for the Vast view.
+        bucket_name:
+          title: Bucket Name
+          type: string
+          description: Name of the Vast S3 Bucket
+        vip_pool:
+          title: Vip Pool
+          type: string
+          description: Name of the Vast Vip Pool
+  steps:
+    - id: template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: ${{ parameters.rootDirectory }}
+        values:
+          name: ${{ parameters.name }}
+          fullyQualifiedName: ${{ parameters.fullyQualifiedName }}
+          description: ${{ parameters.description }}
+          domain: ${{ parameters.domain }}
+          dataproduct: ${{ parameters.dataproduct }}
+          identifier: ${{ parameters.identifier }}
+          developmentGroup: ${{ parameters.developmentGroup }}
+          dependsOn: ${{ parameters.dependsOn }}
+          processDescription: ${{ parameters.processDescription }}
+          intervalOfChange: ${{ parameters.intervalOfChange }}
+          timeliness: ${{ parameters.timeliness }}
+          upTime: ${{ parameters.upTime }}
+          termsAndConditions: ${{ parameters.termsAndConditions }}
+          endpoint: ${{ parameters.endpoint }}
+          purpose: ${{ parameters.purpose }}
+          billing: ${{ parameters.billing }}
+          security: ${{ parameters.security }}
+          intendedUsage: ${{ parameters.intendedUsage }}
+          limitations: ${{ parameters.limitations }}
+          lifeCycle: ${{ parameters.lifeCycle }}
+          confidentiality: ${{ parameters.confidentiality }}
+          path: ${{  parameters.path }}
+          bucket_name: ${{ parameters.bucket_name }}
+          policy_name: ${{ parameters.policy_name }}
+          vip_pool: ${{ parameters.vip_pool }}
+          creationDate: ${{ parameters.creationDate }}
+          useCaseTemplateId: urn:dmb:utm:vast-s3-outputport-template:0.0.0
+          infrastructureTemplateId: urn:dmb:itm:vast-s3-outputport-provisioner:0
+          destination: ${{ parameters.repoUrl | parseRepoUrl }}
+          displayName: ${{ parameters.displayName }}
+          artifact_id: ${{ parameters.name }}
+          useCaseTemplateVersion: 0.0.0
+    - id: publish
+      name: Publish
+      action: witboostMeshComponent:publish:gitlab
+      input:
+        allowedHosts:
+          - gitlab.com
+        description: This is ${{ parameters.name }}
+        repoUrl: &repoUrl gitlab.com?owner=AgileFactory%2Fincubation%2Fvastboost%2F${{parameters.domain | replace(r/domain:| |-/, "") }}%2F${{parameters.name.split(" ") | join("") | lower }}&repo=DataProduct.${{parameters.name.split(" ") | join("") | lower }}
+        rootDirectory: .
+        dataproduct: ${{ parameters.dataproduct }}
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /${{ parameters.rootDirectory }}catalog-info.yaml
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open Component
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}
