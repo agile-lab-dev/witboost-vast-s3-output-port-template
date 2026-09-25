@@ -1,0 +1,8 @@
+site_name: "Vast S3 Output Port Template"
+site_description: "Create an Output Port backed by an S3 area on the VAST Data platform"
+
+nav:
+  - Template Usage: index.md
+
+plugins:
+  - techdocs-core

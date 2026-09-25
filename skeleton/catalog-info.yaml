@@ -1,10 +1,11 @@
+%SKELETON
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: ${{ values.identifier }}
   description: ${{ values.description | dump }}
   annotations:
-    gitlab.com/project-slug: ${{ values.destination.owner + "/" + values.destination.repo }}
+    gitlab.com/project-slug: ${{ values.repoGroup + "/" + values.repoName }}
     backstage.io/techdocs-ref: dir:.
   tags:
     - outputport
@@ -13,7 +14,7 @@ metadata:
 spec:
   type: outputport
   lifecycle: experimental
-  owner: ${{ values.developmentGroup | dump }}
+  owner: ${{ values.owner | dump }}
   system: ${{ values.dataproduct | dump }}
   domain: ${{ values.domain | dump }}
   mesh:
@@ -27,7 +28,7 @@ spec:
     dependsOn:
     {%- if values.dependsOn and values.dependsOn | length > 0 -%}
       {%- for i in values.dependsOn %}
-      - {{ i }}
+      - ${{ i }}
       {%- endfor -%}
     {%- else %} []
     {%- endif %}
@@ -42,9 +43,9 @@ spec:
       termsAndConditions: ${{ values.termsAndConditions | dump }}
       endpoint: ${{ values.endpoint | dump }}
       SLA:
-        intervalOfChange: ${{ values.intervalOfChange }}
-        timeliness: ${{ values.timeliness }}
-        upTime: ${{ values.upTime }}
+        intervalOfChange: ${{ values.intervalOfChange | dump }}
+        timeliness: ${{ values.timeliness | dump }}
+        upTime: ${{ values.upTime | dump }}
     dataSharingAgreements:
       purpose: ${{ values.purpose | dump }}
       billing: ${{ values.billing | dump }}

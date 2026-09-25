@@ -1,21 +1,42 @@
-${{ values.component_id }}
+## Component Information
 
-This repository contains a template to create in a self-service way an s3 storage space on the Vast Data platform.
+| Field Name               | Value                            |
+|:--------------------------|:---------------------------------|
+| **Name**                 | ${{ values.name }}               |
+| **Fully Qualified Name** | ${{ values.fullyQualifiedName }} |
+| **Description**          | ${{ values.description }}        |
+| **Domain**               | ${{ values.domain }}             |
+| **Data Product**         | ${{ values.dataproduct }}        |
+| **Identifier**           | ${{ values.identifier }}         |
+| **Component Owner**      | ${{ values.owner }}              |
+| **Depends On**           | ${{ values.dependsOn }}          |
 
-${{ values.description }}
-Getting started
+## Terms and Conditions & SLA
 
-Start write your documentation by adding more markdown (.md) files to this folder (/docs) or replace the content in this file.
-Table of Contents
+| Field name               | Value                             |
+|:--------------------------|:----------------------------------|
+| **Terms and Conditions** | ${{ values.termsAndConditions }} |
+| **Interval of change**   | ${{ values.intervalOfChange }}   |
+| **Timeliness**           | ${{ values.timeliness }}         |
+| **Uptime**               | ${{ values.upTime }}             |
 
-The Table of Contents on the right is generated automatically based on the hierarchy of headings. Only use one H1 (# in Markdown) per file.
-Site navigation
+## Data Sharing Agreement
 
-For new pages to appear in the left hand navigation you need edit the mkdocs.yml file in root of your repo. The navigation can also link out to other sites.
+| Field name          | Value                          |
+|:---------------------|:--------------------------------|
+| **Purpose**         | ${{ values.purpose }}         |
+| **Billing**         | ${{ values.billing }}         |
+| **Security**        | ${{ values.security }}        |
+| **Intended Usage**  | ${{ values.intendedUsage }}   |
+| **Limitations**     | ${{ values.limitations }}     |
+| **Lifecycle**       | ${{ values.lifeCycle }}       |
+| **Confidentiality** | ${{ values.confidentiality }} |
 
-Alternatively, if there is no nav section in mkdocs.yml, a navigation section will be created for you. However, you will not be able to use alternate titles for pages, or include links to other sites.
+## Vast deployment information
 
-Note that MkDocs uses mkdocs.yml, not mkdocs.yaml, although both appear to work. See also https://www.mkdocs.org/user-guide/configuration/.
-Support
-
-That's it. If you need support, reach out in #docs-like-code on Discord.
+| Field Name      | Value                     |
+|:------------------|:---------------------------|
+| **S3 Path**    | ${{ values.path }}        |
+| **Policy Name**| ${{ values.policy_name }} |
+| **Bucket Name**| ${{ values.bucket_name }} |
+| **Vip Pool**   | ${{ values.vip_pool }}    |
